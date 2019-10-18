@@ -1,8 +1,8 @@
 PYTHON=env/bin/python
 db=db.sqlite3
 
-initialinsert:
-	$(PYTHON) manage.py shell << initial_fill.py
+initial_fill:
+	$(PYTHON) initial_fill.py
 
 cleanmigrate:
 	rm crud/migrations/*.py
@@ -13,7 +13,7 @@ resetdatabase:
 	make cleanmigrate
 	make prepmigrate
 	make migrate
-	make initialinsert
+	make initial_fill
 
 droptables:
 	rm $(db)
