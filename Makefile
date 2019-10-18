@@ -1,38 +1,33 @@
-PYTHON=../env/bin/python
+PYTHON=env/bin/python
+db=db.sqlite3
 
 initialinsert:
-	$(MYSQL) --defaults-file=$(CNF) -v < $(SQLFILES)/inserts.sql
-	$(PYTHON)
-
-geonamemigrate:
-	$(MYSQL) --defaults-file=$(HOME)/.inig/mysql/db.cnf -v < $(SQLFILES)/geonamemigration.sql
+	$(PYTHON) manage.py shell << initial_fill.py
 
 cleanmigrate:
-	rm rkiprojects/migrations/*.py
+	rm crud/migrations/*.py
+	touch crud/migrations/__init__.py
 
-# before you run this you have to manually drop tables
 resetdatabase:
+	make droptables
 	make cleanmigrate
 	make prepmigrate
 	make migrate
 	make initialinsert
-	make geonamemigrate
 
 droptables:
-	$(PYTHON) manage.py migrate rkiprojects zero
+	rm $(db)
+	touch $(db)
 
 prepmigrate:
 	$(PYTHON) manage.py makemigrations
-	$(PYTHON) manage.py makemigrations rkiprojects
+	$(PYTHON) manage.py makemigrations crud
 
 migrate:
 	$(PYTHON) manage.py migrate
 
 superuser:
 	$(PYTHON) manage.py createsuperuser
-
-geomodels:
-	$(PYTHON) manage.py inspectdb --database=geonames > geomodels.py
 
 runserver:
 	$(PYTHON) manage.py runserver
