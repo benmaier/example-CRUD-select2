@@ -25,8 +25,8 @@ make runserver
 locate to
 
 * http://localhost:8000/institution/create
-* http://localhost:8000/institution/update/1 # This will currently produce the erroneous behavior
+* http://localhost:8000/institution/update/1
 * http://localhost:8000/geoname/create
-* http://localhost:8000/geoname/update/2 # This will show that the ModelSelect2Widget works on a Model with less entries.
+* http://localhost:8000/geoname/update/2
 
 
